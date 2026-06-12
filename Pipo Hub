@@ -1,0 +1,73 @@
+-- 1. Önce Kütüphaneyi Yükle
+local PipoLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/sigganex31/updated-Pipo-Hub-Gui/refs/heads/main/Gui%20exe%20rar%20mp4%20mp3%20png"))()
+local MainFrame = PipoLib:CreateWindow("PIPO HUB - GOD MODE")
+
+-- Yardımcı Buton Fonksiyonu
+local function AddButton(name, callback)
+    local btn = Instance.new("TextButton", MainFrame)
+    btn.Size = UDim2.new(0.9, 0, 0, 35)
+    btn.Position = UDim2.new(0.05, 0, 0.15 + (#MainFrame:GetChildren() * 0.06), 0)
+    btn.Text = name
+    btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.MouseButton1Click:Connect(callback)
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 5)
+end
+
+-- [EĞLENCE VE TROLL MODÜLLERİ]
+
+-- Fake Aimbot (Sadece mesaj verir)
+AddButton("Fake Aimbot (Troll)", function()
+    print("Aimbot Aktif! (Tabii yersen :) )")
+end)
+
+-- Gerçek Aimbot (???)
+AddButton("??? (Gerçek Aimbot)", function()
+    local Camera = game:GetService("Workspace").CurrentCamera
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    
+    local target = nil
+    local dist = math.huge
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("Head") then
+            local mag = (p.Character.Head.Position - LocalPlayer.Character.Head.Position).Magnitude
+            if mag < dist then dist = mag; target = p.Character.Head end
+        end
+    end
+    if target then Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position) end
+end)
+
+-- ESP (Basit)
+AddButton("ESP (Box)", function()
+    for _, p in pairs(game.Players:GetPlayers()) do
+        if p ~= game.Players.LocalPlayer and p.Character then
+            local highlight = Instance.new("Highlight", p.Character)
+            highlight.FillColor = Color3.fromRGB(255, 0, 0)
+        end
+    end
+end)
+
+-- Movement
+AddButton("Speed: 100", function() game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100 end)
+AddButton("Jump: 100", function() game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100 end)
+AddButton("Gravity: 0 (Uçuş Modu)", function() workspace.Gravity = 0 end)
+
+-- Noclip
+AddButton("Noclip: ON", function()
+    game:GetService("RunService").Stepped:Connect(function()
+        for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+            if part:IsA("BasePart") then part.CanCollide = false end
+        end
+    end)
+end)
+
+-- Fly (Basit)
+AddButton("Fly (Y Bas)", function()
+    local mouse = game.Players.LocalPlayer:GetMouse()
+    mouse.KeyDown:Connect(function(k)
+        if k == "y" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 50, 0)
+        end
+    end)
+end)
